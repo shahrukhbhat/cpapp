@@ -6,6 +6,11 @@ annotate RiskService.Risks with {
 	descr       @title: 'Description';
 	miti        @title: 'Mitigation';
 	impact      @title: 'Impact';
+	supplier    @(
+        title: 'Supplier',
+        Common.Text: supplier.fullName,
+        Common.TextArrangement: #TextOnly
+    )
 }
 
 annotate RiskService.Mitigations with {
@@ -61,7 +66,9 @@ annotate RiskService.Risks with @(
 				{
 					Value: impact,
 					Criticality: criticality
-				}
+				},
+				{Value: supplier_ID},
+                {Value: supplier.isBlocked}
 			]
 		}
 	},
@@ -90,3 +97,38 @@ annotate RiskService.Risks with {
 		}
 	);
 }
+
+annotate RiskService.Suppliers with {
+    isBlocked   @title: 'Supplier Blocked';
+}
+
+// Annotations for value help
+
+annotate RiskService.Risks with {
+    supplier @(
+        Common.ValueList: {
+            Label: 'Suppliers',
+            CollectionPath: 'Suppliers',
+            Parameters: [
+                { $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: supplier_ID,
+                    ValueListProperty: 'ID'
+                },
+                { $Type: 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'fullName'
+                }
+            ]
+        }
+    );
+}
+
+annotate RiskService.Suppliers with {
+    ID          @(
+        title: 'ID',
+        Common.Text: fullName
+    );
+    fullName    @title: 'Name';
+}
+
+annotate RiskService.Suppliers with @Capabilities.SearchRestrictions.Searchable : false;
+

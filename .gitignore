@@ -33,3 +33,5 @@ dist/
 resources/
 app/*/package-lock.json
 
+.env
+
